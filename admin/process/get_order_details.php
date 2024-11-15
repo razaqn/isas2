@@ -7,7 +7,7 @@ ini_set('display_errors', 0);
 header('Content-Type: application/json');
 
 try {
-    require_once 'config.php';
+    require_once '../database/config.php';
     
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
         throw new Exception('Invalid order ID');

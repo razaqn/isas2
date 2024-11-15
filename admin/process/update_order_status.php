@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 
 try {
     // Include config setelah set header
-    require_once 'config.php';
+    require_once '../database/config.php';
     
     // Validasi request method
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'config.php';
+require_once '../database/config.php';
 
 // Pastikan request adalah POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

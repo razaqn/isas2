@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../database/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'] ?? '';
@@ -24,17 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute([$name, $contact, $message]);
             
             // Redirect back with success message
-            header("Location: index.php?contact_status=success#contact");
+            header("Location: ../../index.php?contact_status=success#contact");
             exit();
         } catch(PDOException $e) {
             // Redirect back with error message
-            header("Location: index.php?contact_status=error#contact");
+            header("Location: ../../index.php?contact_status=error#contact");
             exit();
         }
     } else {
         // Redirect back with validation errors
         $error_string = implode(",", $errors);
-        header("Location: index.php?contact_status=validation&errors=" . urlencode($error_string) . "#contact");
+        header("Location: ../../index.php?contact_status=validation&errors=" . urlencode($error_string) . "#contact");
         exit();
     }
 }
