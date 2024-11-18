@@ -145,7 +145,7 @@ try {
                     <a class="btn btn-primary btn-lg mt-4" href="menu.php">View Menu</a>
                 </div>
                 <div class="col-lg-6">
-                    <img src="/api/placeholder/600/400" alt="Italian dish" class="img-fluid rounded-circle">
+                    <img src="uploads/image/italian_dish.jpg" alt="Italian dish" class="img-fluid rounded-circle">
                 </div>
             </div>
         </div>
