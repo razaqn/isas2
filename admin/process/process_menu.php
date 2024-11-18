@@ -1,10 +1,10 @@
 <?php
-require_once 'admin_check.php';
+require_once '../check.php';
 checkAdminLogin();
 require_once '../database/config.php';
 
 function uploadImage($file) {
-    $target_dir = "uploads/menu/";
+    $target_dir = "../../uploads/menu/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
