@@ -136,10 +136,10 @@ try {
             <?php foreach($menuItems as $item): ?>
             <div class="col-md-4 mb-4">
                 <div class="card dish-card">
-                    <!-- <img src="uploads/menu/<?php echo htmlspecialchars($item['image']); ?>" 
+                    <img src="uploads/menu/<?php echo htmlspecialchars($item['image']); ?>" 
                          class="card-img-top" 
                          alt="<?php echo htmlspecialchars($item['nama']); ?>"
-                         onerror="this.src='/api/placeholder/400/300'"> -->
+                         onerror="this.src='/api/placeholder/400/300'">
                     <div class="category-badge"><?php echo htmlspecialchars($item['category']); ?></div>
                     <div class="card-body">
                         <h5 class="card-title"><?php echo htmlspecialchars($item['nama']); ?></h5>

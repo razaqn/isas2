@@ -5,6 +5,10 @@ try {
     // Get top 3 dishes by order count
     $stmt = $pdo->query("SELECT * FROM menu ORDER BY jumlah_beli DESC LIMIT 3");
     $topDishes = $stmt->fetchAll();
+
+    // Get latest testimonials
+    $stmt = $pdo->query("SELECT * FROM review WHERE status = 'approved' ORDER BY review_date DESC LIMIT 3");
+    $testimonials = $stmt->fetchAll();
 } catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
     die();
@@ -159,10 +163,10 @@ try {
                 <?php foreach($topDishes as $dish): ?>
                 <div class="col-md-4">
                     <div class="card dish-card">
-                        <!-- <img src="uploads/menu/<?php echo htmlspecialchars($dish['image']); ?>" 
+                        <img src="uploads/menu/<?php echo htmlspecialchars($dish['image']); ?>" 
                              class="card-img-top" 
                              alt="<?php echo htmlspecialchars($dish['nama']); ?>"
-                             onerror="this.src='/api/placeholder/400/300'"> -->
+                             onerror="this.src='/api/placeholder/400/300'">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($dish['nama']); ?></h5>
                             <p class="card-text"><?php echo htmlspecialchars($dish['description']); ?></p>
@@ -191,45 +195,28 @@ try {
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row">
+                            <?php foreach($testimonials as $testimonial): ?>
                             <div class="col-md-4">
                                 <div class="testimonial-card">
-                                    <h5>Maria Romano</h5>
+                                    <h5><?php echo htmlspecialchars($testimonial['customer_name']); ?></h5>
                                     <div class="text-warning mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
+                                        <?php
+                                        $rating = (int)$testimonial['rating'];
+                                        for($i = 0; $i < $rating; $i++) {
+                                            echo '<i class="fas fa-star"></i>';
+                                        }
+                                        for($i = $rating; $i < 5; $i++) {
+                                            echo '<i class="far fa-star"></i>';
+                                        }
+                                        ?>
                                     </div>
-                                    <p>"The best Italian seafood I've had outside of Italy. Absolutely authentic!"</p>
+                                    <p>"<?php echo htmlspecialchars($testimonial['review_text']); ?>"</p>
+                                    <small class="text-muted">
+                                        <?php echo date('d M Y', strtotime($testimonial['review_date'])); ?>
+                                    </small>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="testimonial-card">
-                                    <h5>Marco Bianchi</h5>
-                                    <div class="text-warning mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p>"Exceptional service and amazing food. The risotto was perfect!"</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="testimonial-card">
-                                    <h5>Laura Conti</h5>
-                                    <div class="text-warning mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p>"The atmosphere and food quality are outstanding. Will definitely return!"</p>
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
