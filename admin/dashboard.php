@@ -24,34 +24,6 @@ try {
     $totalReviews = $reviewStats['total_reviews'];
     $pendingReviews = $reviewStats['pending_reviews'];
 
-    // SWOT statistics
-    $stmt = $pdo->query("SELECT 
-        sc.name as category,
-        COUNT(si.id) as total_items,
-        SUM(CASE WHEN si.priority = 'high' THEN 1 ELSE 0 END) as priority_high
-        FROM swot_categories sc
-        LEFT JOIN swot_items si ON sc.id = si.category_id AND si.status = 'active'
-        GROUP BY sc.id, sc.name");
-    $swotStats = $stmt->fetchAll();
-
-    // Timeline statistics
-    $stmt = $pdo->query("SELECT 
-        period,
-        COUNT(*) as total_items
-        FROM development_timeline
-        GROUP BY period");
-    $timelineStats = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-
-    // Action Items statistics
-    $stmt = $pdo->query("SELECT 
-        COUNT(*) as total_actions,
-        SUM(CASE WHEN priority = 'high' THEN 1 ELSE 0 END) as high_priority_count,
-        SUM(CASE WHEN status = 'Not Started' THEN 1 ELSE 0 END) as not_started_count,
-        SUM(CASE WHEN status IN ('In Progress', 'Planning') THEN 1 ELSE 0 END) as in_progress_count,
-        SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) as completed_count
-        FROM action_items");
-    $actionStats = $stmt->fetch();
-
 } catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
     die();
@@ -97,27 +69,6 @@ try {
         .nav-link {
             color: white !important;
         }
-
-        .progress-mini {
-            height: 4px;
-            margin-top: 8px;
-        }
-
-        .timeline-indicator {
-            padding: 0.25rem 0.5rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-        }
-
-        .timeline-short { background-color: #d1e7dd; color: #0f5132; }
-        .timeline-medium { background-color: #fff3cd; color: #664d03; }
-        .timeline-long { background-color: #cff4fc; color: #055160; }
-
-        .swot-summary-card { border-left: 4px solid; }
-        .strengths-card { border-color: #28a745; }
-        .weaknesses-card { border-color: #dc3545; }
-        .opportunities-card { border-color: #17a2b8; }
-        .threats-card { border-color: #ffc107; }
     </style>
 </head>
 <body class="bg-light">
@@ -184,119 +135,6 @@ try {
             </div>
         </div>
 
-        <!-- Development Progress -->
-        <div class="row mb-4">
-            <!-- Timeline Progress -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="card-title">Development Timeline</h5>
-                            <a href="swot.php" class="btn btn-primary btn-sm">
-                                <i class="fas fa-external-link-alt"></i> View Details
-                            </a>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="timeline-indicator timeline-short">
-                                    Short Term (0-3 months)
-                                </span>
-                                <span class="badge bg-primary"><?php echo $timelineStats['short'] ?? 0; ?> items</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="timeline-indicator timeline-medium">
-                                    Medium Term (3-6 months)
-                                </span>
-                                <span class="badge bg-primary"><?php echo $timelineStats['medium'] ?? 0; ?> items</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="timeline-indicator timeline-long">
-                                    Long Term (6-12 months)
-                                </span>
-                                <span class="badge bg-primary"><?php echo $timelineStats['long'] ?? 0; ?> items</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Items Progress -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="card-title">Action Items Progress</h5>
-                            <span class="badge bg-primary"><?php echo $actionStats['total_actions']; ?> total</span>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span>Completed</span>
-                                <span class="badge bg-success"><?php echo $actionStats['completed_count']; ?></span>
-                            </div>
-                            <div class="progress progress-mini">
-                                <div class="progress-bar bg-success" style="width: <?php echo ($actionStats['completed_count'] / $actionStats['total_actions'] * 100); ?>%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span>In Progress</span>
-                                <span class="badge bg-info"><?php echo $actionStats['in_progress_count']; ?></span>
-                            </div>
-                            <div class="progress progress-mini">
-                                <div class="progress-bar bg-info" style="width: <?php echo ($actionStats['in_progress_count'] / $actionStats['total_actions'] * 100); ?>%"></div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span>Not Started</span>
-                                <span class="badge bg-warning"><?php echo $actionStats['not_started_count']; ?></span>
-                            </div>
-                            <div class="progress progress-mini">
-                                <div class="progress-bar bg-warning" style="width: <?php echo ($actionStats['not_started_count'] / $actionStats['total_actions'] * 100); ?>%"></div>
-                            </div>
-                        </div>
-                        <?php if($actionStats['high_priority_count'] > 0): ?>
-                        <div class="mt-3">
-                            <small class="text-danger">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <?php echo $actionStats['high_priority_count']; ?> high priority items
-                            </small>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SWOT Summary -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title">SWOT Analysis Summary</h5>
-                    <a href="swot.php" class="btn btn-primary btn-sm">
-                        <i class="fas fa-external-link-alt"></i> View Full Analysis
-                    </a>
-                </div>
-                <div class="row">
-                    <?php foreach($swotStats as $stat): ?>
-                    <div class="col-md-3 mb-3">
-                        <div class="card swot-summary-card h-100 <?php echo strtolower($stat['category']); ?>-card">
-                            <div class="card-body">
-                                <h6 class="card-title"><?php echo $stat['category']; ?></h6>
-                                <p class="mb-0"><?php echo $stat['total_items']; ?> items</p>
-                                <?php if($stat['priority_high'] > 0): ?>
-                                <small class="text-danger">
-                                    <?php echo $stat['priority_high']; ?> high priority
-                                </small>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-
         <!-- Quick Actions -->
         <div class="card mb-5">
             <div class="card-body">
@@ -313,9 +151,6 @@ try {
                     </a>
                     <a href="messages.php" class="btn btn-primary">
                         <i class="fas fa-envelope"></i> View Messages
-                    </a>
-                    <a href="swot_management.php" class="btn btn-info">
-                        <i class="fas fa-chart-line"></i> SWOT Management
                     </a>
                 </div>
             </div>
