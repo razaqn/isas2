@@ -21,7 +21,7 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #1A5F7A;
+            --primary-color: #FC51D7;
             --secondary-color: #86C8BC;
         }
         
@@ -73,7 +73,7 @@ try {
             position: absolute;
             top: -8px;
             right: -8px;
-            background-color: #1A5F7A;
+            background-color: #FC51D7;
             color: white;
             border-radius: 50%;
             padding: 2px 6px;
@@ -96,7 +96,7 @@ try {
         }
         
         .quantity-btn {
-            background: #1A5F7A;
+            background: #FC51D7;
             color: white;
             border: none;
             width: 25px;

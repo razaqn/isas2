@@ -53,12 +53,12 @@ try {
         
         .stat-icon {
             font-size: 2.5rem;
-            color: #1A5F7A;
+            color: #FC51D7;
             margin-bottom: 1rem;
         }
         
         .navbar {
-            background-color: #1A5F7A;
+            background-color: #FC51D7;
         }
         
         .navbar-brand {

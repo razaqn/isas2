@@ -56,20 +56,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         .restaurant-name {
-            color: #1A5F7A;
+            color: #FC51D7;
             font-family: 'Palatino', serif;
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
         
         .form-control:focus {
-            border-color: #1A5F7A;
+            border-color: #FC51D7;
             box-shadow: 0 0 0 0.2rem rgba(26, 95, 122, 0.25);
         }
         
         .btn-primary {
-            background-color: #1A5F7A;
-            border-color: #1A5F7A;
+            background-color: #FC51D7;
+            border-color: #FC51D7;
         }
         
         .btn-primary:hover {

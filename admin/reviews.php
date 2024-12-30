@@ -50,7 +50,7 @@ if (isset($_POST['review_id']) && isset($_POST['action'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .navbar {
-            background-color: #1A5F7A;
+            background-color: #FC51D7;
         }
         
         .navbar-brand {
